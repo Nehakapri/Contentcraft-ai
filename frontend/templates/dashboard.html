@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - ContentCraft AI{% endblock %}
+
+{% block content %}
+<div class="container page">
+  <h1 class="page-title">Dashboard</h1>
+  <p class="page-subtitle">Jump into a tool, or pick up where you left off.</p>
+
+  <h2 class="section-title">Tools</h2>
+  <div class="card-grid">
+    {% for key, info in content_types.items() %}
+    <a class="card feature-card" href="{{ url_for('pages.generate_page', type=key) }}">
+      <span class="icon-badge"><i class="fa-solid {{ info.icon }}"></i></span>
+      <h3>{{ info.label }}</h3>
+      <p>{{ info.description }}</p>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="section-head">
+    <h2 class="section-title">Recent activity</h2>
+    <a href="{{ url_for('pages.history_page') }}">View all history &rarr;</a>
+  </div>
+
+  {% if db_error %}
+    <div class="alert alert-error">Could not read your saved content from the database.</div>
+  {% elif recent %}
+    <p class="muted">You have {{ total }} saved item{{ '' if total == 1 else 's' }}.</p>
+    <ul class="recent-list card">
+      {% for item in recent %}
+      <li>
+        <a href="{{ url_for('pages.history_page') }}#item-{{ item.id }}">
+          <span class="badge">{{ content_types[item.content_type].label if item.content_type in content_types else item.content_type }}</span>
+          <span class="recent-title">{{ item.title }}</span>
+          <span class="muted">{{ item.created_at[:10] }}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="empty-state card">
+      <i class="fa-regular fa-folder-open"></i>
+      <h3>Nothing saved yet</h3>
+      <p>Generate something and click Save. It will show up here.</p>
+      <a class="btn btn-primary" href="{{ url_for('pages.generate_page') }}">Create content</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

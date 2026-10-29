@@ -1,0 +1,21 @@
+# Secrets
+.env
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Local database (remove these lines if you want to commit sample data)
+instance/*.db
+instance/*.sqlite3
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+requirements-lock.txt

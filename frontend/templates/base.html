@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ContentCraft AI{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
+  <!-- Icons only. If you are offline the site still works, just without icons. -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>
+    // Apply the saved theme before the page is painted, to avoid a light/dark flash.
+    try { var t = localStorage.getItem("cc-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar container" aria-label="Main navigation">
+      <a class="brand" href="{{ url_for('pages.index') }}">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="" width="32" height="32">
+        <span>ContentCraft <strong>AI</strong></span>
+      </a>
+      <button id="nav-toggle" class="icon-btn nav-toggle" type="button"
+              aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul id="nav-links" class="nav-links">
+        {% set ep = request.endpoint %}
+        <li><a href="{{ url_for('pages.index') }}" class="{{ 'active' if ep == 'pages.index' }}">Home</a></li>
+        <li><a href="{{ url_for('pages.dashboard') }}" class="{{ 'active' if ep == 'pages.dashboard' }}">Dashboard</a></li>
+        <li><a href="{{ url_for('pages.generate_page') }}" class="{{ 'active' if ep == 'pages.generate_page' }}">Generate</a></li>
+        <li><a href="{{ url_for('pages.history_page') }}" class="{{ 'active' if ep == 'pages.history_page' }}">History</a></li>
+        <li><a href="{{ url_for('pages.about') }}" class="{{ 'active' if ep == 'pages.about' }}">About</a></li>
+        <li>
+          <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark mode">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>ContentCraft AI &middot; a college project. AI output can contain mistakes, so always review it before use.</p>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

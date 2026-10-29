@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}About - ContentCraft AI{% endblock %}
+
+{% block content %}
+<div class="container page prose">
+  <h1 class="page-title">About ContentCraft AI</h1>
+  <p>
+    ContentCraft AI is a college software-engineering project. It lets a user generate, summarize,
+    rewrite and polish text with an AI model, and keep the results they like in a local history.
+    It is meant for students, teachers, content creators and professionals.
+  </p>
+
+  <h2>Technologies used</h2>
+  <ul>
+    <li><strong>Frontend:</strong> HTML5, CSS3 and vanilla JavaScript (Fetch API for server calls).</li>
+    <li><strong>Backend:</strong> Python 3 and Flask, exposing a small REST API.</li>
+    <li><strong>Database:</strong> SQLite, accessed through Python's built-in <code>sqlite3</code> module.</li>
+    <li><strong>AI:</strong> Google Gemini API through the official <code>google-genai</code> SDK.</li>
+    <li><strong>Configuration:</strong> a <code>.env</code> file loaded with <code>python-dotenv</code>.</li>
+  </ul>
+
+  <h2>How the pieces fit together</h2>
+  <ol>
+    <li>The <strong>browser</strong> shows the pages and sends the user's request as JSON to Flask.</li>
+    <li><strong>Flask</strong> validates the request, builds a prompt from a template, and asks the AI service to generate text.</li>
+    <li>The <strong>AI service</strong> calls the Gemini API. The API key stays on the server and never reaches the browser.</li>
+    <li>The generated text goes back to the browser as JSON. If the user saves it, Flask stores it in <strong>SQLite</strong>.</li>
+    <li>The History page reads saved items back from SQLite.</li>
+  </ol>
+
+  <h2>Good to know</h2>
+  <ul>
+    <li>This version is <strong>single-user and local</strong>. There are no accounts or login, so anyone who can open the site on this computer can see the saved history. A multi-user version would need authentication and authorization.</li>
+    <li>AI providers can change free-tier limits, models and pricing at any time, and may apply quotas.</li>
+    <li>AI-generated text can be wrong. Review it before you use it.</li>
+  </ul>
+</div>
+{% endblock %}

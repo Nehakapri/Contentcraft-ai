@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Generate - ContentCraft AI{% endblock %}
+
+{% block content %}
+<div class="container page">
+  <h1 class="page-title">Content workspace</h1>
+  <p class="page-subtitle">Pick a task, describe what you need, and let the AI draft it.</p>
+
+  <div class="workspace">
+    <!-- ===== Input form ===== -->
+    <form id="generate-form" class="card panel" novalidate>
+      <fieldset class="type-picker">
+        <legend>1. Content type</legend>
+        <div class="type-grid">
+          {% for key, info in content_types.items() %}
+          <label class="type-option">
+            <input type="radio" name="content_type" value="{{ key }}"
+                   data-placeholder="{{ info.placeholder }}" {% if key == selected_type %}checked{% endif %}>
+            <span class="type-card"><i class="fa-solid {{ info.icon }}"></i><span>{{ info.label }}</span></span>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="user-input">2. Your topic, instructions or text</label>
+        <textarea id="user-input" rows="9" data-max="{{ max_input_chars }}"
+                  placeholder="{{ content_types[selected_type].placeholder }}"></textarea>
+        <div class="field-hint"><span id="char-count">0 / {{ max_input_chars }}</span></div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="tone">Tone</label>
+          <select id="tone">
+            {% for key in tones %}
+            <option value="{{ key }}" {% if key == 'professional' %}selected{% endif %}>{{ key|capitalize }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="length">Length</label>
+          <select id="length">
+            {% for key, label in lengths.items() %}
+            <option value="{{ key }}" {% if key == 'medium' %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="extra-instructions">Additional instructions <span class="muted">(optional)</span></label>
+        <input type="text" id="extra-instructions" maxlength="{{ max_extra_chars }}"
+               placeholder="e.g. Mention that the deadline is Friday">
+      </div>
+
+      <div id="form-error" class="alert alert-error" role="alert" hidden></div>
+
+      <button type="submit" id="generate-btn" class="btn btn-primary btn-lg btn-block">
+        <span class="spinner" aria-hidden="true"></span>
+        <i class="fa-solid fa-wand-magic-sparkles icon-idle"></i>
+        <span id="generate-label">Generate</span>
+      </button>
+      <p class="field-hint">Tip: press Ctrl + Enter inside the text box to generate.</p>
+    </form>
+
+    <!-- ===== Result panel ===== -->
+    <section class="card panel output-panel" aria-live="polite">
+      <h2 class="panel-title">Result</h2>
+
+      <div id="output-empty" class="empty-state">
+        <i class="fa-regular fa-file-lines"></i>
+        <p>Your generated content will appear here.</p>
+      </div>
+
+      <div id="output-text" class="output-text" hidden></div>
+
+      <div id="output-actions" class="output-actions" hidden>
+        <button type="button" id="copy-btn" class="btn btn-ghost"><i class="fa-regular fa-copy"></i> Copy</button>
+        <button type="button" id="save-btn" class="btn btn-ghost"><i class="fa-regular fa-floppy-disk"></i> <span id="save-label">Save</span></button>
+        <button type="button" id="regenerate-btn" class="btn btn-ghost"><i class="fa-solid fa-arrows-rotate"></i> Regenerate</button>
+        <button type="button" id="clear-btn" class="btn btn-ghost"><i class="fa-solid fa-eraser"></i> Clear</button>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/generate.js') }}" defer></script>
+{% endblock %}

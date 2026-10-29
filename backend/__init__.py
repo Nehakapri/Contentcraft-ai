@@ -1,0 +1,1 @@
+"""Makes the backend folder a Python package so we can write: from backend import database"""

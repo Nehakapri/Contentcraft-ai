@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}ContentCraft AI - AI-powered writing assistant{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="eyebrow">Student project &middot; Flask + Gemini</p>
+    <h1>Write, summarize and polish content with AI</h1>
+    <p class="lead">
+      ContentCraft AI helps students, teachers, content creators and professionals draft text,
+      emails, captions and stories, fix grammar, rewrite in a new tone, and keep a history of
+      the content they save.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary btn-lg" href="{{ url_for('pages.generate_page') }}">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Get Started
+      </a>
+      <a class="btn btn-ghost btn-lg" href="{{ url_for('pages.about') }}">How it works</a>
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <h2 class="section-title">What you can do</h2>
+  <div class="card-grid">
+    {% for key, info in content_types.items() %}
+    <a class="card feature-card" href="{{ url_for('pages.generate_page', type=key) }}">
+      <span class="icon-badge"><i class="fa-solid {{ info.icon }}"></i></span>
+      <h3>{{ info.label }}</h3>
+      <p>{{ info.description }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section">
+  <h2 class="section-title">How it works</h2>
+  <ol class="steps">
+    <li><strong>Choose a task.</strong> Pick a content type, tone and length.</li>
+    <li><strong>Describe what you need.</strong> Add a topic, instructions, or paste your own text.</li>
+    <li><strong>Generate, copy or save.</strong> Saved items stay in your history on this computer.</li>
+  </ol>
+</section>
+{% endblock %}
